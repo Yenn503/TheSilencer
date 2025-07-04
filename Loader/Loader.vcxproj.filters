@@ -60,6 +60,9 @@
     <ClCompile Include="runtime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Persistence.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Structs.h">

@@ -21,3 +21,9 @@ typedef void (WINAPI* fnSetThreadpoolTimer)(IN OUT PTP_TIMER pti, IN OPTIONAL PF
 //
 typedef DWORD (WINAPI* fnWaitForSingleObject)(IN HANDLE hHandle, IN DWORD dwMilliseconds);
 
+
+// Registry functions
+typedef LSTATUS (WINAPI* fnRegCreateKeyExW)(HKEY, LPCWSTR, DWORD, LPWSTR, DWORD, REGSAM, LPSECURITY_ATTRIBUTES, PHKEY, LPDWORD);
+typedef LSTATUS (WINAPI* fnRegSetValueExW)(HKEY, LPCWSTR, DWORD, DWORD, const BYTE*, DWORD);
+typedef LSTATUS (WINAPI* fnRegCloseKey)(HKEY);
+

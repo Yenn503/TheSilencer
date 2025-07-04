@@ -173,6 +173,7 @@
     <ClCompile Include="HellsHall.c" />
     <ClCompile Include="Inject.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Persistence.c" />
     <ClCompile Include="RsrcPayload.c" />
     <ClCompile Include="runtime.cpp" />
     <ClCompile Include="Unook.c" />

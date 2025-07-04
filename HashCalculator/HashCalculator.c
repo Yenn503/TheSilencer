@@ -22,6 +22,11 @@ CONST CHAR* g_StringsArray[] = {
     "CreateThreadpoolTimer",
     "SetThreadpoolTimer",
     "WaitForSingleObject",
+
+    // Registry functions - kept for persistence
+    "RegCreateKeyExW",
+    "RegSetValueExW",
+    "RegCloseKey",
     
     NULL
 };
@@ -59,5 +64,13 @@ int main() {
     // Used with GetModuleHandleH
     printf("\n#define %s%s \t 0x%0.8X \n", "kernel32dll", STR, HASH("kernel32.dll"));
     printf("#define %s%s \t 0x%0.8X \n", "ntdlldll", STR, HASH("ntdll.dll"));
+    printf("#define %s%s \t 0x%0.8X \n", "advapi32dll", STR, HASH("advapi32.dll"));
+    printf("#define shell32dll_DJB2          0x%0.8X \n", HASH("shell32.dll"));
 
+    printf("\n// Registry function hashes\n");
+    printf("#define REG_CREATE_HASH \t\t 0x%0.8X \n", HASH("RegCreateKeyExW"));
+    printf("#define REG_SET_VALUE_HASH \t\t 0x%0.8X \n", HASH("RegSetValueExW"));
+    printf("#define REG_CLOSE_KEY_HASH \t\t 0x%0.8X \n", HASH("RegCloseKey"));
+
+    return 0;
 }

