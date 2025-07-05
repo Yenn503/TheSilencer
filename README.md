@@ -1,7 +1,7 @@
 ﻿# TheSilencer Project 
-AV evasion = Active
-EDR evasion = unknown / untested 
-This solution contains three interrelated projects for malware development research and learning.
+- AV evasion = Active
+- EDR evasion = unknown / untested 
+- This solution contains three interrelated projects for malware development research and learning.
 
 ## Projects
 
