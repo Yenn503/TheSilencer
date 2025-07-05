@@ -1,5 +1,6 @@
-# TheSilencer Project 
-
+﻿# TheSilencer Project 
+AV evasion = Active
+EDR evasion = unknown / untested 
 This solution contains three interrelated projects for malware development research and learning.
 
 ## Projects
@@ -77,7 +78,7 @@ This solution contains three interrelated projects for malware development resea
 
 ## Project Structure
 TheSilencer/
-??? Loader/              # Main loader implementation
-??? PayloadEncrypter/    # Payload encryption tool
-??? HashCalculator/      # Hash calculation utility
+├── Loader/              # Main loader implementation
+├── PayloadEncrypter/    # Payload encryption tool
+└── HashCalculator/      # Hash calculation utility
 
