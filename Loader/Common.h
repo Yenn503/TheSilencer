@@ -9,6 +9,8 @@
 //
 #define DELAY
 
+// Banner Function
+VOID XmPrintBanner(VOID);
 
 // CONSTANTS
 #define NETWORK_TIMEOUT                         0x0A            // 10 Seconds delay before executing the payload

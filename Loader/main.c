@@ -46,6 +46,10 @@ VOID XmSimulateNetworkDelay(IN FLOAT delayMinutes) {
 int main() {
 #ifdef DEBUG
     CreateDebugConsole();
+    XmPrintBanner();  // Moved after console creation
+    PRINT("\n[+] Starting Network Configuration...\n\n");
+	// small timeout for reading banner
+	Sleep(10000);
 #endif
 
     // Initialize network components first

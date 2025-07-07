@@ -1,4 +1,4 @@
-// "@Yenn.exe | TheSilencer Project 
+﻿// "@Yenn.exe | TheSilencer Project 
 // API hashing, dynamic key generation, and entropy-based timing functions
 
 #include <Windows.h>
@@ -18,6 +18,30 @@ typedef NTSTATUS (NTAPI* fnNtWriteVirtualMemory)(HANDLE, PVOID, PVOID, SIZE_T, P
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
 
 extern NETWORK_CONFIG g_NetworkConfig;
+
+// Print banner using debug print
+VOID XmPrintBanner(VOID) {
+#ifdef DEBUG
+    PRINT("\n");
+    PRINT("    ________            _____ _ __                           \n");
+    PRINT("   /_  __/ /_  ___     / ___/(_) /__  ____  ________  _____ \n");
+    PRINT("    / / / __ \\/ _ \\    \\__ \\/ / / _ \\/ __ \\/ ___/ _ \\/ ___/ \n");
+    PRINT("   / / / / / /  __/   ___/ / / /  __/ / / / /__/  __/ /     \n");
+    PRINT("  /_/ /_/ /_/\\___/   /____/_/_/\\___/_/ /_/\\___/\\___/_/      \n");
+    PRINT("\n");
+    PRINT("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+\n");
+    PRINT("  ||                  [ Project Details ]                      ||\n");
+    PRINT("  ||                                                           ||\n");
+    PRINT("  ||  [*] Code Name  : The Silencer                            ||\n");
+    PRINT("  ||  [*] Developer  : Yenn                                    ||\n");
+    PRINT("  ||  [*] Version    : 1.0.0-alpha                             ||\n");
+    PRINT("  ||  [*] Build      : Release x64                             ||\n");
+    PRINT("  ||                                                           ||\n");
+    PRINT("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+\n");
+    PRINT("     [ Offensive Security Research & Development Project ]\n");
+    PRINT("\n");
+#endif
+}
 
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Entropy-based timing function with variable range
