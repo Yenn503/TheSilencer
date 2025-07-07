@@ -27,6 +27,10 @@ CONST CHAR* g_StringsArray[] = {
     "RegCreateKeyExW",
     "RegSetValueExW",
     "RegCloseKey",
+
+    "EtwEventWrite",
+    "NtWriteVirtualMemory",
+	"NtTraceEvent",
     
     NULL
 };

