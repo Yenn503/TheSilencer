@@ -1,6 +1,6 @@
 ﻿# 🔇 TheSilencer Project 
 
-A custom loader that utilises MalDevs Academy implementation process injection. Which has been further enhanced and modified for stealth and evasion. TheSilencer is designed to bypass modern antivirus and EDR solutions while maintaining a low profile during execution.s
+A custom loader that utilises MalDevs Academy implementation of process injection. Which has been further enhanced and modified for stealth and evasion. TheSilencer is designed to bypass modern antivirus and EDR solutions while maintaining a low profile during execution.
 
 ### 🎯 AV Bypass Status
 
