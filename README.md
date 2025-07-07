@@ -1,9 +1,19 @@
 ﻿# 🔇 TheSilencer Project 
 
-## 🛡️ Status
-- AV Evasion: ✅ Active
-- EDR Evasion: ⚠️ Untested
-- Type: Research & Learning Project
+A custom loader that utilises MalDevs Academy implementation process injection. Which has been further enhanced and modified for stealth and evasion. TheSilencer is designed to bypass modern antivirus and EDR solutions while maintaining a low profile during execution.s
+
+### 🎯 AV Bypass Status
+
+| Antivirus Solution | Status |
+|-------------------|--------|
+| Windows Defender | ✅ ACTIVE |
+
+### 🎯 EDR Bypass Status
+
+| EDR Solution | Status |
+|--------------|--------|
+| SOPHOS EDR/XDR | ✅ TESTED & WORKING |
+| Cronos EDR | NEXT TO BE TESTED |
 
 ## 🎯 Core Features
 
@@ -14,13 +24,7 @@
 - Anti-debugging mechanisms
 - Jitter sleep routines
 - Memory cleanup procedures
-
-### 🔐 Persistence
-- Run key implementation
-- Dynamic/random key names
-- Windows path blending
-- Reboot survival
-
+- 
 ### 📦 Payload Handling
 - AES encryption
 - Resource embedding
@@ -47,6 +51,8 @@
 - DLL unhooking implementation
 - Registry persistence system
 - Entropy-based timing
+- ETW bypass mechanism with jittering
+- Chunked memory operations
 - Debug progress UI
 - `/Loader` directory
 
@@ -80,9 +86,10 @@
 ## 📝 Usage
 1. Generate API hashes (HashCalculator)
 2. Prepare encrypted payload (PayloadEncrypter)
-3. Execute payload with persistence (Loader)
+3. Execute payload (Loader)
 
-## 📂 StructureTheSilencer/
+## 📂 Structure
+TheSilencer/
 ├── Loader/              # Core loader
 ├── PayloadEncrypter/    # Encryption tools
 └── HashCalculator/      # Hash utilities
