@@ -16,29 +16,60 @@ typedef NTSTATUS (NTAPI* fnNtWriteVirtualMemory)(HANDLE, PVOID, PVOID, SIZE_T, P
 #define MIN_JITTER 1
 #define MAX_JITTER 10
 #define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+#define MAX_BANNER_WIDTH 120
 
 extern NETWORK_CONFIG g_NetworkConfig;
+
+// Function to center text without CRT dependencies
+VOID XmPrintCentered(LPCSTR text) {
+#ifdef DEBUG
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    INT width;
+    INT len = 0;
+    CHAR spaces[MAX_BANNER_WIDTH] = { 0 };
+    
+    // Calculate string length
+    while (text[len] != '\0') len++;
+    
+    if (GetConsoleScreenBufferInfo(hConsole, &csbi)) {
+        width = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+        INT padding = (width - len) / 2;
+        if (padding > 0 && padding < MAX_BANNER_WIDTH) {
+            for (INT i = 0; i < padding; i++) {
+                spaces[i] = ' ';
+            }
+            spaces[padding] = '\0';
+            PRINT("%s%s\n", spaces, text);
+        } else {
+            PRINT("%s\n", text);
+        }
+    } else {
+        PRINT("%s\n", text);
+    }
+#endif
+}
 
 // Print banner using debug print
 VOID XmPrintBanner(VOID) {
 #ifdef DEBUG
     PRINT("\n");
-    PRINT("    ________            _____ _ __                           \n");
-    PRINT("   /_  __/ /_  ___     / ___/(_) /__  ____  ________  _____ \n");
-    PRINT("    / / / __ \\/ _ \\    \\__ \\/ / / _ \\/ __ \\/ ___/ _ \\/ ___/ \n");
-    PRINT("   / / / / / /  __/   ___/ / / /  __/ / / / /__/  __/ /     \n");
-    PRINT("  /_/ /_/ /_/\\___/   /____/_/_/\\___/_/ /_/\\___/\\___/_/      \n");
+    XmPrintCentered("     ________            _____ _ __                           ");
+    XmPrintCentered("   /_  __/ /_  ___     / ___/(_) /__  ____  ________  _____ ");
+    XmPrintCentered("    / / / __ \\/ _ \\    \\__ \\/ / / _ \\/ __ \\/ ___/ _ \\/ ___/ ");
+    XmPrintCentered("   / / / / / /  __/   ___/ / / /  __/ / / / /__/  __/ /     ");
+    XmPrintCentered("  /_/ /_/ /_/\\___/   /____/_/_/\\___/_/ /_/\\___/\\___/_/      ");
     PRINT("\n");
-    PRINT("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+\n");
-    PRINT("  ||                  [ Project Details ]                      ||\n");
-    PRINT("  ||                                                           ||\n");
-    PRINT("  ||  [*] Code Name  : The Silencer                            ||\n");
-    PRINT("  ||  [*] Developer  : Yenn                                    ||\n");
-    PRINT("  ||  [*] Version    : 1.0.0-alpha                             ||\n");
-    PRINT("  ||  [*] Build      : Release x64                             ||\n");
-    PRINT("  ||                                                           ||\n");
-    PRINT("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+\n");
-    PRINT("     [ Offensive Security Research & Development Project ]\n");
+    XmPrintCentered("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+");
+    XmPrintCentered("  ||                  [ Project Details ]                      ||");
+    XmPrintCentered("  ||                                                           ||");
+    XmPrintCentered("  ||  [*] Code Name  : The Silencer                            ||");
+    XmPrintCentered("  ||  [*] Developer  : Yenn                                    ||");
+    XmPrintCentered("  ||  [*] Version    : 1.0.0-alpha                             ||");
+    XmPrintCentered("  ||  [*] Build      : Release x64                             ||");
+    XmPrintCentered("  ||                                                           ||");
+    XmPrintCentered("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+");
+    XmPrintCentered("     [ Offensive Security Research & Development Project ]");
     PRINT("\n");
 #endif
 }
