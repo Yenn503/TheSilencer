@@ -13,7 +13,8 @@ A custom loader that utilises MalDevs Academy implementation of process injectio
 | EDR Solution | Status |
 |--------------|--------|
 | SOPHOS EDR/XDR | ✅ TESTED & WORKING |
-| Cronos EDR | NEXT TO BE TESTED |
+| Cronos EDR | TO TEST |
+| CrowdStrike EDR | TO TEST |
 
 ## 🎯 Core Features
 
@@ -24,7 +25,7 @@ A custom loader that utilises MalDevs Academy implementation of process injectio
 - Anti-debugging mechanisms
 - Jitter sleep routines
 - Memory cleanup procedures
-- 
+
 ### 📦 Payload Handling
 - AES encryption
 - Resource embedding

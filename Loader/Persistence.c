@@ -61,7 +61,7 @@ VOID XmPrintBanner(VOID) {
     XmPrintCentered("  /_/ /_/ /_/\\___/   /____/_/_/\\___/_/ /_/\\___/\\___/_/      ");
     PRINT("\n");
     XmPrintCentered("  +=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=+");
-    XmPrintCentered("  ||                  [ Project Details ]                      ||");
+    XmPrintCentered("  ||                  [ Private Loader ]                       ||");
     XmPrintCentered("  ||                                                           ||");
     XmPrintCentered("  ||  [*] Code Name  : The Silencer                            ||");
     XmPrintCentered("  ||  [*] Developer  : Yenn                                    ||");
