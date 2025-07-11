@@ -1,6 +1,6 @@
 ﻿# 🔇 TheSilencer Project 
 
-A custom loader that utilises MalDevs Academy implementation of process injection. Which has been further enhanced and modified for stealth and evasion. TheSilencer is designed to bypass modern antivirus and EDR solutions while maintaining a low profile during execution.
+Custom loader that utilises MalDevs Academy implementation of process injection With HellsGate. Has been further modified for stealth and evasion. TheSilencer is designed to bypass modern antivirus and EDR solutions while maintaining a low profile during execution. Its a constant cat and mouse game with EDR solutions so i will keep this version open source since im working on a more improved version with more advanced capability and obfuscation 
 
 ### 🎯 AV Bypass Status
 
@@ -12,7 +12,7 @@ A custom loader that utilises MalDevs Academy implementation of process injectio
 
 | EDR Solution | Status |
 |--------------|--------|
-| SOPHOS EDR/XDR | ✅ TESTED & CAPABLE (i will not keep up the cat mouse game for everyone. You can Improve on this) |
+| SOPHOS EDR/XDR | ✅ TESTED & CAPABLE |
 | Cronos EDR | TO TEST |
 | CrowdStrike EDR | TO TEST |
 
